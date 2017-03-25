@@ -9,6 +9,21 @@ if [ ! -f $message_store ]; then
     touch $message_store
 fi
 
+function tmux_notify_usage {
+    read -d '' usage <<- EOF
+Usage: `basename $0` [COMMAND | PROGRAM_NAME MESSAGE]
+
+Commands:
+  count       Show number of pending notifications
+  clear       Clear all notifications
+  show        Print notifications and clear
+  show-nc     Print notifications (but don't clear)
+EOF
+
+    echo "$usage" 1>&2
+    exit 1
+}
+
 function tmux_notify {
     #notification="[$(date)] $1: $2"
     notification="$1: $2"
@@ -51,6 +66,8 @@ elif [ "$1" == "show" ]; then
     tmux_notify_clear
 elif [ "$1" == "show-nc" ]; then
     cat $message_store
-else
+elif [ "$#" -eq 2 ]; then
     tmux_notify $*
+else
+    tmux_notify_usage
 fi
