@@ -4,8 +4,11 @@
 # Released under the MIT License; see ./LICENSE for details
 
 message_store=${HOME}/.tmux-notify
+config_file=${HOME}/.tmux-notify.conf
 
-if [ ! -f $message_store ]; then
+if [ -f $config_file ]; then
+    source $config_file
+elif [ ! -f $message_store ]; then
     touch $message_store
 fi
 
