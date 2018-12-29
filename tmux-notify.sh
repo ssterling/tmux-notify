@@ -12,7 +12,7 @@ elif [ ! -f $message_store ]; then
     touch $message_store
 fi
 
-function tmux_notify_usage {
+tmux_notify_usage () {
     read -d '' usage <<- EOF
 Usage: `basename $0` [COMMAND | PROGRAM_NAME MESSAGE]
 
@@ -27,7 +27,7 @@ EOF
     exit 1
 }
 
-function tmux_notify {
+tmux_notify () {
     #notification="[$(date)] $1: $2"
     notification="$1: $2"
     echo $notification >> $message_store
@@ -42,7 +42,7 @@ function tmux_notify {
     return $?
 }
 
-function tmux_notify_count {
+tmux_notify_count () {
     if [ -e $message_store ]; then
         message_count=$(wc -l ${message_store} | awk '{ print $1 }')
     else
@@ -51,7 +51,7 @@ function tmux_notify_count {
     echo $message_count
 }
 
-function tmux_notify_clear {
+tmux_notify_clear () {
     if [ -e $message_store ]; then
         rm $message_store && touch $message_store
     else
@@ -60,14 +60,14 @@ function tmux_notify_clear {
     return $?
 }
 
-if [ "$1" == "count" ]; then
+if [ "$1" = "count" ]; then
     echo $(tmux_notify_count)
-elif [ "$1" == "clear" ]; then
+elif [ "$1" = "clear" ]; then
     tmux_notify_clear
-elif [ "$1" == "show" ]; then
+elif [ "$1" = "show" ]; then
     cat $message_store
     tmux_notify_clear
-elif [ "$1" == "show-nc" ]; then
+elif [ "$1" = "show-nc" ]; then
     cat $message_store
 elif [ "$#" -eq 2 ]; then
     tmux_notify $*
