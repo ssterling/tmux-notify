@@ -70,7 +70,7 @@ elif [ "$1" = "show" ]; then
 elif [ "$1" = "show-nc" ]; then
     cat $message_store
 elif [ "$#" -eq 2 ]; then
-    tmux_notify $*
+    tmux_notify "$@"
 else
     tmux_notify_usage
 fi
